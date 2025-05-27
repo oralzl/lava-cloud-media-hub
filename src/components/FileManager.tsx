@@ -77,27 +77,32 @@ const FileManager: React.FC<FileManagerProps> = ({
   return (
     <div className="flex-1 flex flex-col">
       {/* Header */}
-      <div className="border-b border-gray-200 p-6">
-        <div className="flex items-center justify-between mb-4">
-          <h1 className="text-2xl font-bold text-gray-900">
-            {getCategoryTitle()}
-          </h1>
-          <span className="text-sm text-gray-600">
-            {sortedFiles.length} file{sortedFiles.length !== 1 ? 's' : ''}
-          </span>
-        </div>
-
-        {/* Sort */}
-        <div className="flex items-center justify-end">
-          <select
-            value={sortBy}
-            onChange={(e) => setSortBy(e.target.value as 'name' | 'date' | 'size')}
-            className="px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-gray-900 focus:border-transparent"
-          >
-            <option value="date">Sort by Date</option>
-            <option value="name">Sort by Name</option>
-            <option value="size">Sort by Size</option>
-          </select>
+      <div className="border-b border-gray-200 bg-white sticky top-0 z-10">
+        <div className="px-6 py-4">
+          <div className="flex items-center justify-between mb-3">
+            <div>
+              <h1 className="text-2xl font-semibold text-gray-900">
+                {getCategoryTitle()}
+              </h1>
+              <span className="text-sm text-gray-500 mt-1 block">
+                {sortedFiles.length} file{sortedFiles.length !== 1 ? 's' : ''}
+              </span>
+            </div>
+            
+            {/* Sort Controls */}
+            <div className="flex items-center">
+              <label className="text-sm text-gray-600 mr-3">Sort by:</label>
+              <select
+                value={sortBy}
+                onChange={(e) => setSortBy(e.target.value as 'name' | 'date' | 'size')}
+                className="px-3 py-2 text-sm border border-gray-300 rounded-md focus:ring-2 focus:ring-gray-900 focus:border-transparent bg-white"
+              >
+                <option value="date">Date</option>
+                <option value="name">Name</option>
+                <option value="size">Size</option>
+              </select>
+            </div>
+          </div>
         </div>
       </div>
 
