@@ -1,7 +1,7 @@
 
 import React, { useState } from 'react';
 import { FileItem, FileCategory } from '../pages/Index';
-import { Music, FileImage, Video, Search } from 'lucide-react';
+import { Music, FileImage, Video } from 'lucide-react';
 
 interface FileManagerProps {
   files: FileItem[];
@@ -16,7 +16,6 @@ const FileManager: React.FC<FileManagerProps> = ({
   onFileSelect,
   selectedFile,
 }) => {
-  const [searchTerm, setSearchTerm] = useState('');
   const [sortBy, setSortBy] = useState<'name' | 'date' | 'size'>('date');
 
   const getFileIcon = (type: string) => {
@@ -48,21 +47,17 @@ const FileManager: React.FC<FileManagerProps> = ({
     });
   };
 
-  const filteredAndSortedFiles = files
-    .filter(file =>
-      file.name.toLowerCase().includes(searchTerm.toLowerCase())
-    )
-    .sort((a, b) => {
-      switch (sortBy) {
-        case 'name':
-          return a.name.localeCompare(b.name);
-        case 'size':
-          return b.size - a.size;
-        case 'date':
-        default:
-          return b.uploadDate.getTime() - a.uploadDate.getTime();
-      }
-    });
+  const sortedFiles = files.sort((a, b) => {
+    switch (sortBy) {
+      case 'name':
+        return a.name.localeCompare(b.name);
+      case 'size':
+        return b.size - a.size;
+      case 'date':
+      default:
+        return b.uploadDate.getTime() - a.uploadDate.getTime();
+    }
+  });
 
   const getCategoryTitle = () => {
     switch (activeCategory) {
@@ -88,22 +83,12 @@ const FileManager: React.FC<FileManagerProps> = ({
             {getCategoryTitle()}
           </h1>
           <span className="text-sm text-gray-600">
-            {filteredAndSortedFiles.length} file{filteredAndSortedFiles.length !== 1 ? 's' : ''}
+            {sortedFiles.length} file{sortedFiles.length !== 1 ? 's' : ''}
           </span>
         </div>
 
-        {/* Search and Sort */}
-        <div className="flex items-center space-x-4">
-          <div className="flex-1 relative">
-            <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-5 h-5" />
-            <input
-              type="text"
-              placeholder="Search files..."
-              value={searchTerm}
-              onChange={(e) => setSearchTerm(e.target.value)}
-              className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-gray-900 focus:border-transparent"
-            />
-          </div>
+        {/* Sort */}
+        <div className="flex items-center justify-end">
           <select
             value={sortBy}
             onChange={(e) => setSortBy(e.target.value as 'name' | 'date' | 'size')}
@@ -118,7 +103,7 @@ const FileManager: React.FC<FileManagerProps> = ({
 
       {/* File List */}
       <div className="flex-1 overflow-auto p-6">
-        {filteredAndSortedFiles.length === 0 ? (
+        {sortedFiles.length === 0 ? (
           <div className="flex flex-col items-center justify-center h-64 text-gray-500">
             <FileImage className="w-16 h-16 mb-4" />
             <p className="text-lg font-medium">No files found</p>
@@ -126,7 +111,7 @@ const FileManager: React.FC<FileManagerProps> = ({
           </div>
         ) : (
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
-            {filteredAndSortedFiles.map((file) => (
+            {sortedFiles.map((file) => (
               <div
                 key={file.id}
                 onClick={() => onFileSelect(file)}
