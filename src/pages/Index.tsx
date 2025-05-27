@@ -1,7 +1,9 @@
+
 import React, { useState } from 'react';
 import Sidebar from '../components/Sidebar';
 import FileManager from '../components/FileManager';
 import FilePreview from '../components/FilePreview';
+import MobileFilePreview from '../components/MobileFilePreview';
 import { Menu } from 'lucide-react';
 
 export type FileCategory = 'all' | 'music' | 'pictures' | 'videos';
@@ -253,7 +255,7 @@ const Index = () => {
           activeCategory={activeCategory}
           onCategoryChange={(category) => {
             setActiveCategory(category);
-            setIsSidebarOpen(false); // Close sidebar on mobile after selection
+            setIsSidebarOpen(false);
           }}
           fileCounts={getFileCounts()}
           onFileUpload={handleFileUpload}
@@ -268,13 +270,26 @@ const Index = () => {
           selectedFile={selectedFile}
         />
         
+        {/* Desktop Preview - Right Panel */}
         {selectedFile && (
-          <FilePreview
+          <div className="hidden md:block">
+            <FilePreview
+              file={selectedFile}
+              onClose={() => setSelectedFile(null)}
+            />
+          </div>
+        )}
+      </div>
+
+      {/* Mobile Preview - Bottom Drawer */}
+      {selectedFile && (
+        <div className="md:hidden">
+          <MobileFilePreview
             file={selectedFile}
             onClose={() => setSelectedFile(null)}
           />
-        )}
-      </div>
+        </div>
+      )}
     </div>
   );
 };
