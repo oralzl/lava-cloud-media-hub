@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { FileItem } from '../pages/Index';
 import { X, Music, FileImage, Video } from 'lucide-react';
@@ -128,9 +127,6 @@ const FilePreview: React.FC<FilePreviewProps> = ({ file, onClose }) => {
         <div className="space-y-2">
           <button className="w-full px-4 py-2 bg-gray-900 text-white rounded-lg hover:bg-gray-800 transition-colors">
             Download
-          </button>
-          <button className="w-full px-4 py-2 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 transition-colors">
-            Share
           </button>
           <button className="w-full px-4 py-2 border border-red-300 text-red-700 rounded-lg hover:bg-red-50 transition-colors">
             Delete
