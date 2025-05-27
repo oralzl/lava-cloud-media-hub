@@ -270,7 +270,7 @@ const Index = () => {
           selectedFile={selectedFile}
         />
         
-        {/* Desktop Preview - Right Panel */}
+        {/* Desktop Preview - Right Panel (only show on desktop) */}
         {selectedFile && (
           <div className="hidden md:block">
             <FilePreview
@@ -283,7 +283,7 @@ const Index = () => {
 
       {/* Mobile Preview - Bottom Drawer (only show on mobile) */}
       {selectedFile && (
-        <div className="block md:hidden">
+        <div className="md:hidden">
           <MobileFilePreview
             file={selectedFile}
             onClose={() => setSelectedFile(null)}
