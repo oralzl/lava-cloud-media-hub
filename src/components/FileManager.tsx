@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { FileItem, FileCategory } from '../pages/Index';
 import { Music, FileImage, Video } from 'lucide-react';
