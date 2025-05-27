@@ -43,12 +43,12 @@ const Sidebar: React.FC<SidebarProps> = ({
   return (
     <div className="w-64 bg-gray-50 border-r border-gray-200 flex flex-col">
       {/* Brand Section */}
-      <div className="p-6 border-b border-gray-200">
-        <div className="flex items-center justify-center space-x-3">
+      <div className="p-4 border-b border-gray-200">
+        <div className="flex items-center space-x-3">
           <img 
             src="/lovable-uploads/7cf97dd2-ad8d-4791-b728-40827facb2e5.png" 
             alt="Lava Brand Logo" 
-            className="w-12 h-12 object-contain"
+            className="w-10 h-10 object-contain"
           />
           <h1 className="text-xl font-bold text-gray-900">lavaCloud</h1>
         </div>
