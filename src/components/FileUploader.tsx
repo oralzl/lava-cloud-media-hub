@@ -78,7 +78,7 @@ const FileUploader: React.FC<FileUploaderProps> = ({ onUpload, onClose }) => {
         <div
           className={`relative border-2 border-dashed rounded-xl p-12 text-center transition-all duration-300 cursor-pointer ${
             dragActive
-              ? 'border-gray-900 bg-gray-50 scale-[1.02] shadow-lg'
+              ? 'border-gray-900 bg-gray-50 scale-[1.02] shadow-lg animate-pulse'
               : 'border-gray-300 hover:border-gray-400 hover:bg-gray-25'
           }`}
           onDragEnter={handleDrag}
@@ -87,22 +87,6 @@ const FileUploader: React.FC<FileUploaderProps> = ({ onUpload, onClose }) => {
           onDrop={handleDrop}
           onClick={() => fileInputRef.current?.click()}
         >
-          {/* Animated dashed border effect */}
-          <div 
-            className={`absolute inset-0 rounded-xl border-2 border-dashed transition-all duration-300 ${
-              dragActive 
-                ? 'border-gray-900 animate-pulse' 
-                : 'border-transparent'
-            }`}
-            style={{
-              backgroundImage: dragActive 
-                ? 'linear-gradient(90deg, transparent 50%, rgba(0,0,0,0.1) 50%)'
-                : 'none',
-              backgroundSize: '10px 2px',
-              animation: dragActive ? 'dash 1s linear infinite' : 'none'
-            }}
-          />
-          
           {/* Upload Cloud Icon */}
           <div className={`transition-all duration-300 ${dragActive ? 'scale-110' : ''}`}>
             <UploadCloud 
@@ -209,13 +193,6 @@ const FileUploader: React.FC<FileUploaderProps> = ({ onUpload, onClose }) => {
           </button>
         </div>
       </div>
-
-      <style jsx>{`
-        @keyframes dash {
-          0% { background-position: 0 0; }
-          100% { background-position: 20px 0; }
-        }
-      `}</style>
     </div>
   );
 };
