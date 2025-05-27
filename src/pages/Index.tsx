@@ -281,9 +281,9 @@ const Index = () => {
         )}
       </div>
 
-      {/* Mobile Preview - Bottom Drawer */}
+      {/* Mobile Preview - Bottom Drawer (only show on mobile) */}
       {selectedFile && (
-        <div className="md:hidden">
+        <div className="block md:hidden">
           <MobileFilePreview
             file={selectedFile}
             onClose={() => setSelectedFile(null)}
