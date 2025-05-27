@@ -15,6 +15,15 @@ const UserProfile: React.FC = () => {
 
   return (
     <div className="space-y-4">
+      {/* Brand Logo */}
+      <div className="flex items-center justify-center mb-4">
+        <img 
+          src="/lovable-uploads/7cf97dd2-ad8d-4791-b728-40827facb2e5.png" 
+          alt="Lava Brand Logo" 
+          className="w-12 h-12 object-contain"
+        />
+      </div>
+
       {/* User Info */}
       <div className="flex items-center space-x-3">
         <div className="w-10 h-10 bg-gray-900 rounded-full flex items-center justify-center">
