@@ -14,7 +14,7 @@ const UserProfile: React.FC = () => {
   const storagePercentage = (user.storageUsed / user.storageTotal) * 100;
 
   return (
-    <div className="space-y-4">
+    <>
       {/* Brand Logo and Name */}
       <div className="flex items-center justify-center space-x-3 mb-4">
         <img 
@@ -55,7 +55,7 @@ const UserProfile: React.FC = () => {
           />
         </div>
       </div>
-    </div>
+    </>
   );
 };
 
