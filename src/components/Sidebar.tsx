@@ -1,6 +1,6 @@
 
 import React, { useState } from 'react';
-import { Music, FileImage, Video, Upload, User } from 'lucide-react';
+import { Music, FileImage, Video, Upload, User, FolderOpen } from 'lucide-react';
 import { FileCategory } from '../pages/Index';
 import UserProfile from './UserProfile';
 import FileUploader from './FileUploader';
@@ -31,12 +31,6 @@ const Sidebar: React.FC<SidebarProps> = ({
     { key: 'pictures' as FileCategory, label: 'Pictures', icon: FileImage, count: fileCounts.pictures },
     { key: 'videos' as FileCategory, label: 'Videos', icon: Video, count: fileCounts.videos },
   ];
-
-  const FolderOpen = () => (
-    <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 19a2 2 0 01-2-2V7a2 2 0 012-2h4l2 2h4a2 2 0 012 2v1M5 19h14a2 2 0 002-2v-5a2 2 0 00-2-2H9a2 2 0 00-2-2v9z" />
-    </svg>
-  );
 
   return (
     <div className="w-64 bg-gray-50 border-r border-gray-200 flex flex-col">
