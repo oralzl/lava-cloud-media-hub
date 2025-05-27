@@ -1,9 +1,15 @@
 
 import React, { useState } from 'react';
-import { Music, FileImage, Video, Upload, User, FolderOpen } from 'lucide-react';
+import { Music, FileImage, Video, Upload, User, FolderOpen, LogOut } from 'lucide-react';
 import { FileCategory } from '../pages/Index';
 import UserProfile from './UserProfile';
 import FileUploader from './FileUploader';
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from './ui/dropdown-menu';
 
 interface SidebarProps {
   activeCategory: FileCategory;
@@ -39,6 +45,11 @@ const Sidebar: React.FC<SidebarProps> = ({
     { key: 'pictures' as FileCategory, label: 'Pictures', icon: FileImage, count: fileCounts.pictures },
     { key: 'videos' as FileCategory, label: 'Videos', icon: Video, count: fileCounts.videos },
   ];
+
+  const handleLogout = () => {
+    console.log('User logged out');
+    // Add logout logic here
+  };
 
   return (
     <div className="w-64 bg-gray-50 border-r border-gray-200 flex flex-col">
@@ -88,20 +99,30 @@ const Sidebar: React.FC<SidebarProps> = ({
 
       {/* User Info Section */}
       <div className="p-4 border-t border-gray-200 space-y-4">
-        {/* User Info */}
-        <div className="flex items-center space-x-3">
-          <div className="w-10 h-10 bg-gray-900 rounded-full flex items-center justify-center">
-            <User className="w-6 h-6 text-white" />
-          </div>
-          <div className="flex-1 min-w-0">
-            <p className="text-sm font-medium text-gray-900 truncate">
-              {user.name}
-            </p>
-            <p className="text-xs text-gray-600 truncate">
-              {user.email}
-            </p>
-          </div>
-        </div>
+        {/* User Info with Dropdown */}
+        <DropdownMenu>
+          <DropdownMenuTrigger asChild>
+            <button className="w-full flex items-center space-x-3 hover:bg-gray-100 p-2 rounded-lg transition-colors">
+              <div className="w-10 h-10 bg-gray-900 rounded-full flex items-center justify-center">
+                <User className="w-6 h-6 text-white" />
+              </div>
+              <div className="flex-1 min-w-0 text-left">
+                <p className="text-sm font-medium text-gray-900 truncate">
+                  {user.name}
+                </p>
+                <p className="text-xs text-gray-600 truncate">
+                  {user.email}
+                </p>
+              </div>
+            </button>
+          </DropdownMenuTrigger>
+          <DropdownMenuContent align="end" className="w-48">
+            <DropdownMenuItem onClick={handleLogout} className="cursor-pointer">
+              <LogOut className="w-4 h-4 mr-2" />
+              退出登录
+            </DropdownMenuItem>
+          </DropdownMenuContent>
+        </DropdownMenu>
 
         {/* Storage Usage */}
         <div className="space-y-2">
