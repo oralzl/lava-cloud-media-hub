@@ -1,6 +1,6 @@
 
 import React, { useState, useRef } from 'react';
-import { Upload, X, FileImage } from 'lucide-react';
+import { Upload, X, FileImage, UploadCloud } from 'lucide-react';
 
 interface FileUploaderProps {
   onUpload: (files: File[]) => void;
@@ -63,8 +63,8 @@ const FileUploader: React.FC<FileUploaderProps> = ({ onUpload, onClose }) => {
 
   return (
     <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-      <div className="bg-white rounded-lg p-6 w-full max-w-md mx-4">
-        <div className="flex items-center justify-between mb-4">
+      <div className="bg-white rounded-lg p-6 w-full max-w-lg mx-4">
+        <div className="flex items-center justify-between mb-6">
           <h3 className="text-lg font-medium text-gray-900">Upload Files</h3>
           <button
             onClick={onClose}
@@ -74,31 +74,81 @@ const FileUploader: React.FC<FileUploaderProps> = ({ onUpload, onClose }) => {
           </button>
         </div>
 
-        {/* Drop Zone */}
+        {/* Enhanced Drop Zone */}
         <div
-          className={`border-2 border-dashed rounded-lg p-8 text-center transition-colors ${
+          className={`relative border-2 border-dashed rounded-xl p-12 text-center transition-all duration-300 cursor-pointer ${
             dragActive
-              ? 'border-gray-900 bg-gray-50'
-              : 'border-gray-300 hover:border-gray-400'
+              ? 'border-gray-900 bg-gray-50 scale-[1.02] shadow-lg'
+              : 'border-gray-300 hover:border-gray-400 hover:bg-gray-25'
           }`}
           onDragEnter={handleDrag}
           onDragLeave={handleDrag}
           onDragOver={handleDrag}
           onDrop={handleDrop}
+          onClick={() => fileInputRef.current?.click()}
         >
-          <Upload className="mx-auto h-12 w-12 text-gray-400 mb-4" />
-          <p className="text-sm text-gray-600 mb-2">
-            Drag and drop files here, or{' '}
-            <button
-              onClick={() => fileInputRef.current?.click()}
-              className="text-gray-900 font-medium hover:underline"
-            >
-              browse
-            </button>
-          </p>
-          <p className="text-xs text-gray-500">
-            Support for images, audio, and video files
-          </p>
+          {/* Animated dashed border effect */}
+          <div 
+            className={`absolute inset-0 rounded-xl border-2 border-dashed transition-all duration-300 ${
+              dragActive 
+                ? 'border-gray-900 animate-pulse' 
+                : 'border-transparent'
+            }`}
+            style={{
+              backgroundImage: dragActive 
+                ? 'linear-gradient(90deg, transparent 50%, rgba(0,0,0,0.1) 50%)'
+                : 'none',
+              backgroundSize: '10px 2px',
+              animation: dragActive ? 'dash 1s linear infinite' : 'none'
+            }}
+          />
+          
+          {/* Upload Cloud Icon */}
+          <div className={`transition-all duration-300 ${dragActive ? 'scale-110' : ''}`}>
+            <UploadCloud 
+              className={`mx-auto h-16 w-16 mb-4 transition-colors duration-300 ${
+                dragActive ? 'text-gray-900' : 'text-gray-400'
+              }`} 
+            />
+          </div>
+          
+          {/* Enhanced text instructions */}
+          <div className="space-y-2">
+            <p className={`text-lg font-medium transition-colors duration-300 ${
+              dragActive ? 'text-gray-900' : 'text-gray-700'
+            }`}>
+              {dragActive ? 'Drop files here!' : 'Drag & Drop files here'}
+            </p>
+            <p className="text-sm text-gray-600">
+              or{' '}
+              <span className="text-gray-900 font-medium hover:underline cursor-pointer">
+                click to browse
+              </span>
+            </p>
+            <div className="flex items-center justify-center space-x-4 mt-4 text-xs text-gray-500">
+              <div className="flex items-center space-x-1">
+                <FileImage size={14} />
+                <span>Images</span>
+              </div>
+              <div className="flex items-center space-x-1">
+                <Upload size={14} />
+                <span>Audio</span>
+              </div>
+              <div className="flex items-center space-x-1">
+                <Upload size={14} />
+                <span>Videos</span>
+              </div>
+            </div>
+          </div>
+
+          {/* Drag overlay */}
+          {dragActive && (
+            <div className="absolute inset-0 bg-gray-900 bg-opacity-5 rounded-xl flex items-center justify-center">
+              <div className="bg-white rounded-lg px-4 py-2 shadow-lg">
+                <p className="text-sm font-medium text-gray-900">Release to upload</p>
+              </div>
+            </div>
+          )}
         </div>
 
         <input
@@ -112,22 +162,27 @@ const FileUploader: React.FC<FileUploaderProps> = ({ onUpload, onClose }) => {
 
         {/* Selected Files */}
         {selectedFiles.length > 0 && (
-          <div className="mt-4 space-y-2 max-h-32 overflow-y-auto">
+          <div className="mt-6 space-y-2 max-h-32 overflow-y-auto">
+            <h4 className="text-sm font-medium text-gray-900 mb-2">
+              Selected Files ({selectedFiles.length})
+            </h4>
             {selectedFiles.map((file, index) => (
               <div
                 key={index}
-                className="flex items-center justify-between p-2 bg-gray-50 rounded"
+                className="flex items-center justify-between p-3 bg-gray-50 rounded-lg border"
               >
-                <div className="flex items-center space-x-2 flex-1 min-w-0">
-                  <FileImage className="w-4 h-4 text-gray-400 flex-shrink-0" />
-                  <span className="text-sm text-gray-900 truncate">{file.name}</span>
-                  <span className="text-xs text-gray-500 flex-shrink-0">
-                    {formatFileSize(file.size)}
-                  </span>
+                <div className="flex items-center space-x-3 flex-1 min-w-0">
+                  <FileImage className="w-5 h-5 text-gray-400 flex-shrink-0" />
+                  <div className="flex-1 min-w-0">
+                    <p className="text-sm text-gray-900 truncate font-medium">{file.name}</p>
+                    <p className="text-xs text-gray-500">
+                      {formatFileSize(file.size)}
+                    </p>
+                  </div>
                 </div>
                 <button
                   onClick={() => removeFile(index)}
-                  className="text-gray-400 hover:text-red-600 ml-2"
+                  className="text-gray-400 hover:text-red-600 ml-2 p-1 rounded hover:bg-red-50 transition-colors"
                 >
                   <X size={16} />
                 </button>
@@ -140,19 +195,27 @@ const FileUploader: React.FC<FileUploaderProps> = ({ onUpload, onClose }) => {
         <div className="flex space-x-3 mt-6">
           <button
             onClick={onClose}
-            className="flex-1 px-4 py-2 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-50 transition-colors"
+            className="flex-1 px-4 py-3 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-50 transition-colors font-medium"
           >
             Cancel
           </button>
           <button
             onClick={handleUpload}
             disabled={selectedFiles.length === 0}
-            className="flex-1 px-4 py-2 bg-gray-900 text-white rounded-lg hover:bg-gray-800 disabled:bg-gray-300 disabled:cursor-not-allowed transition-colors"
+            className="flex-1 px-4 py-3 bg-gray-900 text-white rounded-lg hover:bg-gray-800 disabled:bg-gray-300 disabled:cursor-not-allowed transition-colors font-medium flex items-center justify-center space-x-2"
           >
-            Upload {selectedFiles.length > 0 && `(${selectedFiles.length})`}
+            <Upload size={18} />
+            <span>Upload {selectedFiles.length > 0 && `(${selectedFiles.length})`}</span>
           </button>
         </div>
       </div>
+
+      <style jsx>{`
+        @keyframes dash {
+          0% { background-position: 0 0; }
+          100% { background-position: 20px 0; }
+        }
+      `}</style>
     </div>
   );
 };
