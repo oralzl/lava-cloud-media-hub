@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import Sidebar from '../components/Sidebar';
 import FileManager from '../components/FileManager';
 import FilePreview from '../components/FilePreview';
+import { Menu } from 'lucide-react';
 
 export type FileCategory = 'all' | 'music' | 'pictures' | 'videos';
 
@@ -18,6 +19,8 @@ export interface FileItem {
 const Index = () => {
   const [activeCategory, setActiveCategory] = useState<FileCategory>('all');
   const [selectedFile, setSelectedFile] = useState<FileItem | null>(null);
+  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+  
   const [files, setFiles] = useState<FileItem[]>([
     {
       id: '1',
@@ -223,15 +226,41 @@ const Index = () => {
   };
 
   return (
-    <div className="min-h-screen bg-white flex">
-      <Sidebar
-        activeCategory={activeCategory}
-        onCategoryChange={setActiveCategory}
-        fileCounts={getFileCounts()}
-        onFileUpload={handleFileUpload}
-      />
+    <div className="min-h-screen bg-white flex relative">
+      {/* Mobile Menu Button */}
+      <button
+        onClick={() => setIsSidebarOpen(true)}
+        className="md:hidden fixed top-4 left-4 z-50 p-2 bg-gray-900 text-white rounded-lg shadow-lg"
+      >
+        <Menu size={20} />
+      </button>
+
+      {/* Mobile Sidebar Overlay */}
+      {isSidebarOpen && (
+        <div 
+          className="md:hidden fixed inset-0 bg-black bg-opacity-50 z-40"
+          onClick={() => setIsSidebarOpen(false)}
+        />
+      )}
+
+      {/* Sidebar */}
+      <div className={`
+        ${isSidebarOpen ? 'translate-x-0' : '-translate-x-full'}
+        md:translate-x-0 transition-transform duration-300 ease-in-out
+        fixed md:relative z-50 md:z-auto
+      `}>
+        <Sidebar
+          activeCategory={activeCategory}
+          onCategoryChange={(category) => {
+            setActiveCategory(category);
+            setIsSidebarOpen(false); // Close sidebar on mobile after selection
+          }}
+          fileCounts={getFileCounts()}
+          onFileUpload={handleFileUpload}
+        />
+      </div>
       
-      <div className="flex-1 flex">
+      <div className="flex-1 flex min-w-0">
         <FileManager
           files={filteredFiles}
           activeCategory={activeCategory}

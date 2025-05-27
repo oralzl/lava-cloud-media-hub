@@ -52,21 +52,21 @@ const Sidebar: React.FC<SidebarProps> = ({
   };
 
   return (
-    <div className="w-64 bg-gray-50 border-r border-gray-200 flex flex-col">
+    <div className="w-64 md:w-64 bg-gray-50 border-r border-gray-200 flex flex-col h-screen">
       {/* Brand Section */}
       <div className="p-4 border-b border-gray-200">
         <div className="flex items-center space-x-3">
           <img 
             src="/lovable-uploads/7cf97dd2-ad8d-4791-b728-40827facb2e5.png" 
             alt="Lava Brand Logo" 
-            className="w-10 h-10 object-contain"
+            className="w-8 h-8 md:w-10 md:h-10 object-contain"
           />
-          <h1 className="text-xl font-bold text-gray-900">lavaCloud</h1>
+          <h1 className="text-lg md:text-xl font-bold text-gray-900">lavaCloud</h1>
         </div>
       </div>
 
       {/* Navigation Menu */}
-      <div className="flex-1 p-4">
+      <div className="flex-1 p-4 overflow-y-auto">
         <nav className="space-y-2">
           {menuItems.map((item) => {
             const IconComponent = item.icon;
@@ -74,17 +74,17 @@ const Sidebar: React.FC<SidebarProps> = ({
               <button
                 key={item.key}
                 onClick={() => onCategoryChange(item.key)}
-                className={`w-full flex items-center justify-between px-3 py-2 rounded-lg text-left transition-colors ${
+                className={`w-full flex items-center justify-between px-3 py-3 md:py-2 rounded-lg text-left transition-colors touch-manipulation ${
                   activeCategory === item.key
                     ? 'bg-gray-900 text-white'
-                    : 'text-gray-600 hover:bg-gray-100 hover:text-gray-900'
+                    : 'text-gray-600 hover:bg-gray-100 hover:text-gray-900 active:bg-gray-200'
                 }`}
               >
                 <div className="flex items-center space-x-3">
-                  <IconComponent />
-                  <span className="font-medium">{item.label}</span>
+                  <IconComponent className="w-5 h-5" />
+                  <span className="font-medium text-sm md:text-base">{item.label}</span>
                 </div>
-                <span className={`text-sm px-2 py-1 rounded-full ${
+                <span className={`text-xs md:text-sm px-2 py-1 rounded-full ${
                   activeCategory === item.key
                     ? 'bg-gray-700 text-gray-300'
                     : 'bg-gray-200 text-gray-600'
@@ -102,12 +102,12 @@ const Sidebar: React.FC<SidebarProps> = ({
         {/* User Info with Dropdown */}
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
-            <button className="w-full flex items-center space-x-3 hover:bg-gray-100 p-2 rounded-lg transition-colors">
-              <div className="w-10 h-10 bg-gray-900 rounded-full flex items-center justify-center">
-                <User className="w-6 h-6 text-white" />
+            <button className="w-full flex items-center space-x-3 hover:bg-gray-100 active:bg-gray-200 p-2 rounded-lg transition-colors touch-manipulation">
+              <div className="w-8 h-8 md:w-10 md:h-10 bg-gray-900 rounded-full flex items-center justify-center">
+                <User className="w-4 h-4 md:w-6 md:h-6 text-white" />
               </div>
               <div className="flex-1 min-w-0 text-left">
-                <p className="text-sm font-medium text-gray-900 truncate">
+                <p className="text-xs md:text-sm font-medium text-gray-900 truncate">
                   {user.name}
                 </p>
                 <p className="text-xs text-gray-600 truncate">
@@ -116,7 +116,7 @@ const Sidebar: React.FC<SidebarProps> = ({
               </div>
             </button>
           </DropdownMenuTrigger>
-          <DropdownMenuContent align="end" className="w-48">
+          <DropdownMenuContent align="end" className="w-48 bg-white">
             <DropdownMenuItem onClick={handleLogout} className="cursor-pointer">
               <LogOut className="w-4 h-4 mr-2" />
               退出登录
@@ -145,10 +145,10 @@ const Sidebar: React.FC<SidebarProps> = ({
       <div className="p-4 border-t border-gray-200">
         <button
           onClick={() => setShowUploader(true)}
-          className="w-full bg-gray-900 text-white px-4 py-3 rounded-lg font-medium hover:bg-gray-800 transition-colors flex items-center justify-center space-x-2"
+          className="w-full bg-gray-900 text-white px-4 py-3 md:py-3 rounded-lg font-medium hover:bg-gray-800 active:bg-gray-700 transition-colors flex items-center justify-center space-x-2 touch-manipulation"
         >
-          <Upload size={20} />
-          <span>Upload Files</span>
+          <Upload size={18} />
+          <span className="text-sm md:text-base">Upload Files</span>
         </button>
         
         {showUploader && (
