@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import Sidebar from '../components/Sidebar';
 import FileManager from '../components/FileManager';
@@ -21,6 +20,7 @@ export interface FileItem {
 const Index = () => {
   const [activeCategory, setActiveCategory] = useState<FileCategory>('all');
   const [selectedFile, setSelectedFile] = useState<FileItem | null>(null);
+  const [selectedFileDesktop, setSelectedFileDesktop] = useState<FileItem | null>(null);
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   
   const [files, setFiles] = useState<FileItem[]>([
@@ -227,6 +227,19 @@ const Index = () => {
     };
   };
 
+  const handleFileSelect = (file: FileItem) => {
+    // Check if we're on mobile or desktop
+    const isMobile = window.innerWidth < 768; // md breakpoint
+    
+    if (isMobile) {
+      setSelectedFile(file);
+      setSelectedFileDesktop(null);
+    } else {
+      setSelectedFileDesktop(file);
+      setSelectedFile(null);
+    }
+  };
+
   return (
     <div className="min-h-screen bg-white flex relative">
       {/* Mobile Menu Button */}
@@ -266,16 +279,16 @@ const Index = () => {
         <FileManager
           files={filteredFiles}
           activeCategory={activeCategory}
-          onFileSelect={setSelectedFile}
-          selectedFile={selectedFile}
+          onFileSelect={handleFileSelect}
+          selectedFile={selectedFileDesktop || selectedFile}
         />
         
         {/* Desktop Preview - Right Panel (only show on desktop) */}
-        {selectedFile && (
+        {selectedFileDesktop && (
           <div className="hidden md:block">
             <FilePreview
-              file={selectedFile}
-              onClose={() => setSelectedFile(null)}
+              file={selectedFileDesktop}
+              onClose={() => setSelectedFileDesktop(null)}
             />
           </div>
         )}
@@ -283,7 +296,7 @@ const Index = () => {
 
       {/* Mobile Preview - Bottom Drawer (only show on mobile) */}
       {selectedFile && (
-        <div className="hidden md:hidden">
+        <div className="md:hidden">
           <MobileFilePreview
             file={selectedFile}
             onClose={() => setSelectedFile(null)}
