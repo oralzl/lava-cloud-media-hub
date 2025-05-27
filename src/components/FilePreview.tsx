@@ -122,17 +122,6 @@ const FilePreview: React.FC<FilePreviewProps> = ({ file, onClose }) => {
             <span className="text-gray-600 text-sm">Uploaded</span>
             <p className="font-medium text-gray-900">{formatDate(file.uploadDate)}</p>
           </div>
-
-          {/* Sync Status */}
-          <div className="p-3 bg-green-50 border border-green-200 rounded-lg">
-            <div className="flex items-center space-x-2">
-              <div className="w-2 h-2 bg-green-500 rounded-full"></div>
-              <span className="text-sm font-medium text-green-800">Synced</span>
-            </div>
-            <p className="text-xs text-green-600 mt-1">
-              Available on all your lava devices
-            </p>
-          </div>
         </div>
 
         {/* Actions */}
