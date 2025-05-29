@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from 'react';
 import { FileItem, FileCategory } from '../pages/Index';
 import { Music, FileImage, Video } from 'lucide-react';
@@ -34,7 +35,7 @@ const FileManager: React.FC<FileManagerProps> = ({
       const timer = setTimeout(() => {
         console.log('Transition animation completed');
         setIsTransitioning(false);
-      }, 200); // Slightly longer for smoother transition
+      }, 200);
       
       setPreviousCategory(activeCategory);
       return () => clearTimeout(timer);
@@ -110,14 +111,10 @@ const FileManager: React.FC<FileManagerProps> = ({
         <div className="px-4 md:px-6 py-4">
           <div className="flex flex-col md:flex-row md:items-center justify-between mb-3 gap-3">
             <div>
-              <h1 className={`text-lg md:text-xl font-semibold text-gray-900 ml-12 md:ml-0 transition-all duration-300 ${
-                isTransitioning ? 'opacity-0 transform translate-y-2' : 'opacity-100 transform translate-y-0'
-              }`}>
+              <h1 className="text-lg md:text-xl font-semibold text-gray-900 ml-12 md:ml-0">
                 {getCategoryTitle()}
               </h1>
-              <span className={`text-sm text-gray-500 mt-1 block ml-12 md:ml-0 transition-all duration-300 delay-75 ${
-                isTransitioning ? 'opacity-0 transform translate-y-2' : 'opacity-100 transform translate-y-0'
-              }`}>
+              <span className="text-sm text-gray-500 mt-1 block ml-12 md:ml-0">
                 {sortedFiles.length} file{sortedFiles.length !== 1 ? 's' : ''}
               </span>
             </div>
