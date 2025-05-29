@@ -20,9 +20,12 @@ const FileManager: React.FC<FileManagerProps> = ({
   const [displayedFiles, setDisplayedFiles] = useState(files);
   const [previousCategory, setPreviousCategory] = useState(activeCategory);
 
-  // Handle category transition animation only when category changes
+  // Handle category transition animation and file updates
   useEffect(() => {
+    console.log('useEffect triggered - activeCategory:', activeCategory, 'files count:', files.length);
+    
     if (activeCategory !== previousCategory) {
+      console.log('Category changed from', previousCategory, 'to', activeCategory);
       setIsTransitioning(true);
       // Immediately update displayed files when category changes
       setDisplayedFiles(files);
@@ -32,6 +35,7 @@ const FileManager: React.FC<FileManagerProps> = ({
       setPreviousCategory(activeCategory);
       return () => clearTimeout(timer);
     } else {
+      console.log('Same category, updating files only');
       // If only files changed but category is the same, update without animation
       setDisplayedFiles(files);
     }
@@ -77,6 +81,8 @@ const FileManager: React.FC<FileManagerProps> = ({
         return b.uploadDate.getTime() - a.uploadDate.getTime();
     }
   });
+
+  console.log('Rendering FileManager - displayedFiles count:', displayedFiles.length, 'sortedFiles count:', sortedFiles.length);
 
   const getCategoryTitle = () => {
     switch (activeCategory) {
