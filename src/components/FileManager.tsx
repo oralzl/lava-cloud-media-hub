@@ -24,8 +24,9 @@ const FileManager: React.FC<FileManagerProps> = ({
   useEffect(() => {
     if (activeCategory !== previousCategory) {
       setIsTransitioning(true);
+      // Immediately update displayed files when category changes
+      setDisplayedFiles(files);
       const timer = setTimeout(() => {
-        setDisplayedFiles(files);
         setIsTransitioning(false);
       }, 150);
       setPreviousCategory(activeCategory);
