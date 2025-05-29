@@ -84,7 +84,7 @@ const Sidebar: React.FC<SidebarProps> = ({
               >
                 <div className="flex items-center space-x-3">
                   <IconComponent className={`w-5 h-5 transition-all duration-300 ${
-                    isActive ? 'animate-pulse' : 'group-hover:scale-110'
+                    isActive ? '' : 'group-hover:scale-110'
                   }`} />
                   <span className="font-medium text-sm md:text-base transition-all duration-300">
                     {item.label}
