@@ -130,7 +130,7 @@ const FileManager: React.FC<FileManagerProps> = ({
             <div className="flex items-center gap-3 ml-12 md:ml-0">
               <div className="flex items-center gap-2 text-sm text-gray-600">
                 <ArrowUpDown className="w-4 h-4" />
-                <span className="font-medium">Sort by:</span>
+                <span className="font-medium">Sort by</span>
               </div>
               <Select value={sortBy} onValueChange={(value: 'name' | 'date' | 'size') => setSortBy(value)}>
                 <SelectTrigger className="w-[140px] bg-white border-gray-300 hover:border-gray-400 focus:border-gray-900 focus:ring-gray-900/10 transition-all duration-200 shadow-sm hover:shadow-md">
