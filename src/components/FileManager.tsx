@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { FileItem, FileCategory } from '../pages/Index';
 import { Music, FileImage, Video } from 'lucide-react';
@@ -19,16 +18,23 @@ const FileManager: React.FC<FileManagerProps> = ({
   const [sortBy, setSortBy] = useState<'name' | 'date' | 'size'>('date');
   const [isTransitioning, setIsTransitioning] = useState(false);
   const [displayedFiles, setDisplayedFiles] = useState(files);
+  const [previousCategory, setPreviousCategory] = useState(activeCategory);
 
-  // Handle category transition animation
+  // Handle category transition animation only when category changes
   useEffect(() => {
-    setIsTransitioning(true);
-    const timer = setTimeout(() => {
+    if (activeCategory !== previousCategory) {
+      setIsTransitioning(true);
+      const timer = setTimeout(() => {
+        setDisplayedFiles(files);
+        setIsTransitioning(false);
+      }, 150);
+      setPreviousCategory(activeCategory);
+      return () => clearTimeout(timer);
+    } else {
+      // If only files changed but category is the same, update without animation
       setDisplayedFiles(files);
-      setIsTransitioning(false);
-    }, 150);
-    return () => clearTimeout(timer);
-  }, [activeCategory, files]);
+    }
+  }, [activeCategory, files, previousCategory]);
 
   const getFileIcon = (type: string) => {
     switch (type) {
@@ -140,13 +146,15 @@ const FileManager: React.FC<FileManagerProps> = ({
               <div 
                 key={file.id}
                 onClick={() => onFileSelect(file)}
-                className={`p-3 md:p-4 border rounded-lg cursor-pointer transition-all duration-300 hover:shadow-lg hover:-translate-y-1 active:scale-95 animate-fadeInUp ${
+                className={`p-3 md:p-4 border rounded-lg cursor-pointer transition-all duration-300 hover:shadow-lg hover:-translate-y-1 active:scale-95 ${
+                  isTransitioning ? 'animate-fadeInUp' : ''
+                } ${
                   selectedFile?.id === file.id 
                     ? 'border-gray-900 bg-gray-50 shadow-md' 
                     : 'border-gray-200 hover:border-gray-300'
                 }`}
                 style={{
-                  animationDelay: isTransitioning ? '0ms' : `${index * 50}ms`
+                  animationDelay: isTransitioning ? `${index * 50}ms` : '0ms'
                 }}
               >
                 <div className="flex items-center space-x-3 mb-3">
