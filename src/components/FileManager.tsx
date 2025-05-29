@@ -140,14 +140,13 @@ const FileManager: React.FC<FileManagerProps> = ({
               <div 
                 key={file.id}
                 onClick={() => onFileSelect(file)}
-                className={`p-3 md:p-4 border rounded-lg cursor-pointer transition-all duration-300 hover:shadow-lg hover:-translate-y-1 active:scale-95 ${
+                className={`p-3 md:p-4 border rounded-lg cursor-pointer transition-all duration-300 hover:shadow-lg hover:-translate-y-1 active:scale-95 animate-fadeInUp ${
                   selectedFile?.id === file.id 
                     ? 'border-gray-900 bg-gray-50 shadow-md' 
                     : 'border-gray-200 hover:border-gray-300'
                 }`}
                 style={{
-                  animationDelay: isTransitioning ? '0ms' : `${index * 50}ms`,
-                  animation: isTransitioning ? 'none' : 'fadeInUp 0.6s ease-out both'
+                  animationDelay: isTransitioning ? '0ms' : `${index * 50}ms`
                 }}
               >
                 <div className="flex items-center space-x-3 mb-3">
@@ -179,19 +178,6 @@ const FileManager: React.FC<FileManagerProps> = ({
           </div>
         )}
       </div>
-
-      <style jsx>{`
-        @keyframes fadeInUp {
-          from {
-            opacity: 0;
-            transform: translateY(20px);
-          }
-          to {
-            opacity: 1;
-            transform: translateY(0);
-          }
-        }
-      `}</style>
     </div>
   );
 };
