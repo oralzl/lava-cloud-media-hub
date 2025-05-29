@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from 'react';
 import { FileItem, FileCategory } from '../pages/Index';
 import { Music, FileImage, Video } from 'lucide-react';
@@ -27,11 +28,15 @@ const FileManager: React.FC<FileManagerProps> = ({
     if (activeCategory !== previousCategory) {
       console.log('Category changed from', previousCategory, 'to', activeCategory);
       setIsTransitioning(true);
-      // Immediately update displayed files when category changes
+      // Update displayed files immediately
       setDisplayedFiles(files);
+      
+      // Reset transition after a short delay
       const timer = setTimeout(() => {
+        console.log('Transition animation completed');
         setIsTransitioning(false);
-      }, 150);
+      }, 100); // Reduced timeout to prevent stuck states
+      
       setPreviousCategory(activeCategory);
       return () => clearTimeout(timer);
     } else {
@@ -82,7 +87,7 @@ const FileManager: React.FC<FileManagerProps> = ({
     }
   });
 
-  console.log('Rendering FileManager - displayedFiles count:', displayedFiles.length, 'sortedFiles count:', sortedFiles.length);
+  console.log('Rendering FileManager - displayedFiles count:', displayedFiles.length, 'sortedFiles count:', sortedFiles.length, 'isTransitioning:', isTransitioning);
 
   const getCategoryTitle = () => {
     switch (activeCategory) {
@@ -138,7 +143,7 @@ const FileManager: React.FC<FileManagerProps> = ({
       {/* File List */}
       <div className="flex-1 overflow-auto p-4 md:p-6">
         {sortedFiles.length === 0 ? (
-          <div className={`flex flex-col items-center justify-center h-64 text-gray-500 transition-all duration-500 ${
+          <div className={`flex flex-col items-center justify-center h-64 text-gray-500 transition-all duration-300 ${
             isTransitioning ? 'opacity-0 transform scale-95' : 'opacity-100 transform scale-100'
           }`}>
             <FileImage className="w-12 h-12 md:w-16 md:h-16 mb-4" />
@@ -146,8 +151,8 @@ const FileManager: React.FC<FileManagerProps> = ({
             <p className="text-sm">Upload some files to get started</p>
           </div>
         ) : (
-          <div className={`grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-3 md:gap-4 transition-all duration-500 ${
-            isTransitioning ? 'opacity-0 transform translate-y-4' : 'opacity-100 transform translate-y-0'
+          <div className={`grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-3 md:gap-4 transition-all duration-300 ${
+            isTransitioning ? 'opacity-30' : 'opacity-100'
           }`}>
             {sortedFiles.map((file, index) => (
               <div 
