@@ -4,6 +4,7 @@ import { Music, FileImage, Video, Upload, User, FolderOpen, LogOut } from 'lucid
 import { FileCategory } from '../pages/Index';
 import UserProfile from './UserProfile';
 import FileUploader from './FileUploader';
+import AnimatedCounter from './AnimatedCounter';
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -59,7 +60,7 @@ const Sidebar: React.FC<SidebarProps> = ({
           <img 
             src="/lovable-uploads/7cf97dd2-ad8d-4791-b728-40827facb2e5.png" 
             alt="Lava Brand Logo" 
-            className="w-8 h-8 md:w-10 md:h-10 object-contain"
+            className="w-8 h-8 md:w-10 md:h-10 object-contain transition-transform duration-300 hover:scale-110" 
           />
           <h1 className="text-lg md:text-xl font-bold text-gray-900">lavaCloud</h1>
         </div>
@@ -70,26 +71,31 @@ const Sidebar: React.FC<SidebarProps> = ({
         <nav className="space-y-2">
           {menuItems.map((item) => {
             const IconComponent = item.icon;
+            const isActive = activeCategory === item.key;
             return (
               <button
                 key={item.key}
                 onClick={() => onCategoryChange(item.key)}
-                className={`w-full flex items-center justify-between px-3 py-3 md:py-2 rounded-lg text-left transition-colors touch-manipulation ${
-                  activeCategory === item.key
-                    ? 'bg-gray-900 text-white'
-                    : 'text-gray-600 hover:bg-gray-100 hover:text-gray-900 active:bg-gray-200'
+                className={`group w-full flex items-center justify-between px-3 py-3 md:py-2 rounded-lg text-left transition-all duration-300 touch-manipulation transform hover:scale-[1.02] active:scale-[0.98] ${
+                  isActive
+                    ? 'bg-gray-900 text-white shadow-lg'
+                    : 'text-gray-600 hover:bg-gray-100 hover:text-gray-900 hover:shadow-md'
                 }`}
               >
                 <div className="flex items-center space-x-3">
-                  <IconComponent className="w-5 h-5" />
-                  <span className="font-medium text-sm md:text-base">{item.label}</span>
+                  <IconComponent className={`w-5 h-5 transition-all duration-300 ${
+                    isActive ? 'animate-pulse' : 'group-hover:scale-110'
+                  }`} />
+                  <span className="font-medium text-sm md:text-base transition-all duration-300">
+                    {item.label}
+                  </span>
                 </div>
-                <span className={`text-xs md:text-sm px-2 py-1 rounded-full ${
-                  activeCategory === item.key
-                    ? 'bg-gray-700 text-gray-300'
-                    : 'bg-gray-200 text-gray-600'
+                <span className={`text-xs md:text-sm px-2 py-1 rounded-full transition-all duration-300 transform ${
+                  isActive
+                    ? 'bg-gray-700 text-gray-300 scale-110'
+                    : 'bg-gray-200 text-gray-600 group-hover:bg-gray-300'
                 }`}>
-                  {item.count}
+                  <AnimatedCounter value={item.count} />
                 </span>
               </button>
             );
@@ -102,8 +108,8 @@ const Sidebar: React.FC<SidebarProps> = ({
         {/* User Info with Dropdown */}
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
-            <button className="w-full flex items-center space-x-3 hover:bg-gray-100 active:bg-gray-200 p-2 rounded-lg transition-colors touch-manipulation">
-              <div className="w-8 h-8 md:w-10 md:h-10 bg-gray-900 rounded-full flex items-center justify-center">
+            <button className="w-full flex items-center space-x-3 hover:bg-gray-100 active:bg-gray-200 p-2 rounded-lg transition-all duration-300 transform hover:scale-[1.02] active:scale-[0.98] touch-manipulation">
+              <div className="w-8 h-8 md:w-10 md:h-10 bg-gray-900 rounded-full flex items-center justify-center transition-all duration-300 hover:shadow-lg">
                 <User className="w-4 h-4 md:w-6 md:h-6 text-white" />
               </div>
               <div className="flex-1 min-w-0 text-left">
@@ -132,9 +138,9 @@ const Sidebar: React.FC<SidebarProps> = ({
               {user.storageUsed}GB / {user.storageTotal}GB
             </span>
           </div>
-          <div className="w-full bg-gray-200 rounded-full h-2">
+          <div className="w-full bg-gray-200 rounded-full h-2 overflow-hidden">
             <div
-              className="bg-gray-900 h-2 rounded-full transition-all duration-300"
+              className="bg-gray-900 h-2 rounded-full transition-all duration-1000 ease-out"
               style={{ width: `${storagePercentage}%` }}
             />
           </div>
@@ -145,9 +151,9 @@ const Sidebar: React.FC<SidebarProps> = ({
       <div className="p-4 border-t border-gray-200">
         <button
           onClick={() => setShowUploader(true)}
-          className="w-full bg-gray-900 text-white px-4 py-3 md:py-3 rounded-lg font-medium hover:bg-gray-800 active:bg-gray-700 transition-colors flex items-center justify-center space-x-2 touch-manipulation"
+          className="w-full bg-gray-900 text-white px-4 py-3 md:py-3 rounded-lg font-medium hover:bg-gray-800 active:bg-gray-700 transition-all duration-300 flex items-center justify-center space-x-2 transform hover:scale-[1.02] active:scale-[0.98] hover:shadow-lg touch-manipulation"
         >
-          <Upload size={18} />
+          <Upload size={18} className="transition-transform duration-300 group-hover:rotate-12" />
           <span className="text-sm md:text-base">Upload Files</span>
         </button>
         

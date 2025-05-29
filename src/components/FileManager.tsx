@@ -1,4 +1,5 @@
-import React, { useState } from 'react';
+
+import React, { useState, useEffect } from 'react';
 import { FileItem, FileCategory } from '../pages/Index';
 import { Music, FileImage, Video } from 'lucide-react';
 
@@ -16,6 +17,18 @@ const FileManager: React.FC<FileManagerProps> = ({
   selectedFile
 }) => {
   const [sortBy, setSortBy] = useState<'name' | 'date' | 'size'>('date');
+  const [isTransitioning, setIsTransitioning] = useState(false);
+  const [displayedFiles, setDisplayedFiles] = useState(files);
+
+  // Handle category transition animation
+  useEffect(() => {
+    setIsTransitioning(true);
+    const timer = setTimeout(() => {
+      setDisplayedFiles(files);
+      setIsTransitioning(false);
+    }, 150);
+    return () => clearTimeout(timer);
+  }, [activeCategory, files]);
 
   const getFileIcon = (type: string) => {
     switch (type) {
@@ -46,7 +59,7 @@ const FileManager: React.FC<FileManagerProps> = ({
     });
   };
 
-  const sortedFiles = files.sort((a, b) => {
+  const sortedFiles = displayedFiles.sort((a, b) => {
     switch (sortBy) {
       case 'name':
         return a.name.localeCompare(b.name);
@@ -80,10 +93,14 @@ const FileManager: React.FC<FileManagerProps> = ({
         <div className="px-4 md:px-6 py-4">
           <div className="flex flex-col md:flex-row md:items-center justify-between mb-3 gap-3">
             <div>
-              <h1 className="text-lg md:text-xl font-semibold text-gray-900 ml-12 md:ml-0">
+              <h1 className={`text-lg md:text-xl font-semibold text-gray-900 ml-12 md:ml-0 transition-all duration-300 ${
+                isTransitioning ? 'opacity-0 transform translate-y-2' : 'opacity-100 transform translate-y-0'
+              }`}>
                 {getCategoryTitle()}
               </h1>
-              <span className="text-sm text-gray-500 mt-1 block ml-12 md:ml-0">
+              <span className={`text-sm text-gray-500 mt-1 block ml-12 md:ml-0 transition-all duration-300 delay-75 ${
+                isTransitioning ? 'opacity-0 transform translate-y-2' : 'opacity-100 transform translate-y-0'
+              }`}>
                 {sortedFiles.length} file{sortedFiles.length !== 1 ? 's' : ''}
               </span>
             </div>
@@ -94,7 +111,7 @@ const FileManager: React.FC<FileManagerProps> = ({
               <select 
                 value={sortBy} 
                 onChange={e => setSortBy(e.target.value as 'name' | 'date' | 'size')} 
-                className="px-3 py-2 text-sm border border-gray-300 rounded-md focus:ring-2 focus:ring-gray-900 focus:border-transparent bg-white"
+                className="px-3 py-2 text-sm border border-gray-300 rounded-md focus:ring-2 focus:ring-gray-900 focus:border-transparent bg-white transition-all duration-200 hover:shadow-md"
               >
                 <option value="date">Date</option>
                 <option value="name">Name</option>
@@ -108,32 +125,40 @@ const FileManager: React.FC<FileManagerProps> = ({
       {/* File List */}
       <div className="flex-1 overflow-auto p-4 md:p-6">
         {sortedFiles.length === 0 ? (
-          <div className="flex flex-col items-center justify-center h-64 text-gray-500">
+          <div className={`flex flex-col items-center justify-center h-64 text-gray-500 transition-all duration-500 ${
+            isTransitioning ? 'opacity-0 transform scale-95' : 'opacity-100 transform scale-100'
+          }`}>
             <FileImage className="w-12 h-12 md:w-16 md:h-16 mb-4" />
             <p className="text-base md:text-lg font-medium">No files found</p>
             <p className="text-sm">Upload some files to get started</p>
           </div>
         ) : (
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-3 md:gap-4">
-            {sortedFiles.map(file => (
+          <div className={`grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-3 md:gap-4 transition-all duration-500 ${
+            isTransitioning ? 'opacity-0 transform translate-y-4' : 'opacity-100 transform translate-y-0'
+          }`}>
+            {sortedFiles.map((file, index) => (
               <div 
                 key={file.id}
                 onClick={() => onFileSelect(file)}
-                className={`p-3 md:p-4 border rounded-lg cursor-pointer transition-all hover:shadow-md active:scale-95 ${
+                className={`p-3 md:p-4 border rounded-lg cursor-pointer transition-all duration-300 hover:shadow-lg hover:-translate-y-1 active:scale-95 ${
                   selectedFile?.id === file.id 
-                    ? 'border-gray-900 bg-gray-50' 
+                    ? 'border-gray-900 bg-gray-50 shadow-md' 
                     : 'border-gray-200 hover:border-gray-300'
                 }`}
+                style={{
+                  animationDelay: isTransitioning ? '0ms' : `${index * 50}ms`,
+                  animation: isTransitioning ? 'none' : 'fadeInUp 0.6s ease-out both'
+                }}
               >
                 <div className="flex items-center space-x-3 mb-3">
                   {file.type === 'image' && file.thumbnail ? (
                     <img 
                       src={file.thumbnail} 
                       alt={file.name} 
-                      className="w-10 h-10 md:w-12 md:h-12 object-cover rounded" 
+                      className="w-10 h-10 md:w-12 md:h-12 object-cover rounded transition-transform duration-200 hover:scale-110" 
                     />
                   ) : (
-                    <div className="w-10 h-10 md:w-12 md:h-12 flex items-center justify-center bg-gray-100 rounded">
+                    <div className="w-10 h-10 md:w-12 md:h-12 flex items-center justify-center bg-gray-100 rounded transition-colors duration-200 hover:bg-gray-200">
                       {getFileIcon(file.type)}
                     </div>
                   )}
@@ -154,6 +179,19 @@ const FileManager: React.FC<FileManagerProps> = ({
           </div>
         )}
       </div>
+
+      <style jsx>{`
+        @keyframes fadeInUp {
+          from {
+            opacity: 0;
+            transform: translateY(20px);
+          }
+          to {
+            opacity: 1;
+            transform: translateY(0);
+          }
+        }
+      `}</style>
     </div>
   );
 };
