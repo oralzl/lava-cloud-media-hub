@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { FileItem, FileCategory } from '../pages/Index';
 import { Music, FileImage, Video } from 'lucide-react';
@@ -35,7 +34,7 @@ const FileManager: React.FC<FileManagerProps> = ({
       const timer = setTimeout(() => {
         console.log('Transition animation completed');
         setIsTransitioning(false);
-      }, 100); // Reduced timeout to prevent stuck states
+      }, 200); // Slightly longer for smoother transition
       
       setPreviousCategory(activeCategory);
       return () => clearTimeout(timer);
@@ -151,23 +150,18 @@ const FileManager: React.FC<FileManagerProps> = ({
             <p className="text-sm">Upload some files to get started</p>
           </div>
         ) : (
-          <div className={`grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-3 md:gap-4 transition-all duration-300 ${
-            isTransitioning ? 'opacity-30' : 'opacity-100'
+          <div className={`grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-3 md:gap-4 transition-all duration-200 ${
+            isTransitioning ? 'opacity-90 transform scale-[0.98]' : 'opacity-100 transform scale-100'
           }`}>
             {sortedFiles.map((file, index) => (
               <div 
                 key={file.id}
                 onClick={() => onFileSelect(file)}
                 className={`p-3 md:p-4 border rounded-lg cursor-pointer transition-all duration-300 hover:shadow-lg hover:-translate-y-1 active:scale-95 ${
-                  isTransitioning ? 'animate-fadeInUp' : ''
-                } ${
                   selectedFile?.id === file.id 
                     ? 'border-gray-900 bg-gray-50 shadow-md' 
                     : 'border-gray-200 hover:border-gray-300'
                 }`}
-                style={{
-                  animationDelay: isTransitioning ? `${index * 50}ms` : '0ms'
-                }}
               >
                 <div className="flex items-center space-x-3 mb-3">
                   {file.type === 'image' && file.thumbnail ? (
