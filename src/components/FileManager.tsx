@@ -1,7 +1,14 @@
 
 import React, { useState, useEffect } from 'react';
 import { FileItem, FileCategory } from '../pages/Index';
-import { Music, FileImage, Video } from 'lucide-react';
+import { Music, FileImage, Video, ArrowUpDown } from 'lucide-react';
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from './ui/select';
 
 interface FileManagerProps {
   files: FileItem[];
@@ -119,18 +126,34 @@ const FileManager: React.FC<FileManagerProps> = ({
               </span>
             </div>
             
-            {/* Sort Controls */}
-            <div className="flex items-center ml-12 md:ml-0">
-              <label className="text-sm text-gray-600 mr-3">Sort by:</label>
-              <select 
-                value={sortBy} 
-                onChange={e => setSortBy(e.target.value as 'name' | 'date' | 'size')} 
-                className="px-3 py-2 text-sm border border-gray-300 rounded-md focus:ring-2 focus:ring-gray-900 focus:border-transparent bg-white transition-all duration-200 hover:shadow-md"
-              >
-                <option value="date">Date</option>
-                <option value="name">Name</option>
-                <option value="size">Size</option>
-              </select>
+            {/* Enhanced Sort Controls */}
+            <div className="flex items-center gap-3 ml-12 md:ml-0">
+              <div className="flex items-center gap-2 text-sm text-gray-600">
+                <ArrowUpDown className="w-4 h-4" />
+                <span className="font-medium">Sort by:</span>
+              </div>
+              <Select value={sortBy} onValueChange={(value: 'name' | 'date' | 'size') => setSortBy(value)}>
+                <SelectTrigger className="w-[140px] bg-white border-gray-300 hover:border-gray-400 focus:border-gray-900 focus:ring-gray-900/10 transition-all duration-200 shadow-sm hover:shadow-md">
+                  <SelectValue />
+                </SelectTrigger>
+                <SelectContent className="bg-white border-gray-200 shadow-xl">
+                  <SelectItem value="date" className="cursor-pointer hover:bg-gray-50 focus:bg-gray-50">
+                    <div className="flex items-center gap-2">
+                      <span>Date Modified</span>
+                    </div>
+                  </SelectItem>
+                  <SelectItem value="name" className="cursor-pointer hover:bg-gray-50 focus:bg-gray-50">
+                    <div className="flex items-center gap-2">
+                      <span>Name</span>
+                    </div>
+                  </SelectItem>
+                  <SelectItem value="size" className="cursor-pointer hover:bg-gray-50 focus:bg-gray-50">
+                    <div className="flex items-center gap-2">
+                      <span>File Size</span>
+                    </div>
+                  </SelectItem>
+                </SelectContent>
+              </Select>
             </div>
           </div>
         </div>
