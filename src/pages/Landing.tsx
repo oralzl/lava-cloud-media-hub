@@ -15,7 +15,7 @@ const Landing = () => {
         {/* 产品名称 */}
         <div className="flex items-center justify-center gap-3 mb-10">
           <h1 className="text-5xl md:text-6xl font-bold tracking-tight bg-gradient-to-r from-white to-gray-300 bg-clip-text text-transparent">
-            lavaStudio
+            lavaCloud
           </h1>
         </div>
 
