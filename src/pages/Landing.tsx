@@ -2,12 +2,15 @@
 import { Button } from "@/components/ui/button";
 import { useState } from "react";
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from "@/components/ui/dialog";
+
 const Landing = () => {
   const [showLoginDialog, setShowLoginDialog] = useState(false);
   const [showSignupDialog, setShowSignupDialog] = useState(false);
-  return <div className="min-h-screen bg-cover bg-center bg-no-repeat flex items-center justify-center" style={{
-    backgroundImage: `linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.4)), url('https://images.unsplash.com/photo-1486312338219-ce68d2c6f44d?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2072&q=80')`
-  }}>
+
+  return (
+    <div className="min-h-screen bg-cover bg-center bg-no-repeat flex items-center justify-center" style={{
+      backgroundImage: `linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.4)), url('https://images.unsplash.com/photo-1486312338219-ce68d2c6f44d?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2072&q=80')`
+    }}>
       <div className="text-center text-white max-w-2xl mx-auto px-6">
         {/* 产品名称 */}
         <div className="flex items-center justify-center gap-3 mb-8">
@@ -21,10 +24,19 @@ const Landing = () => {
 
         {/* 登录注册入口 */}
         <div className="flex items-center justify-center gap-6">
-          <Button size="lg" onClick={() => setShowLoginDialog(true)} variant="outline" className="bg-white/10 border-white/30 text-white hover:bg-white/20 backdrop-blur-sm px-8 py-3 text-lg">
+          <Button 
+            size="lg" 
+            onClick={() => setShowLoginDialog(true)} 
+            variant="outline" 
+            className="bg-white/10 border-white/30 text-white hover:bg-white/20 backdrop-blur-sm px-8 py-3 text-lg"
+          >
             登录
           </Button>
-          <Button size="lg" onClick={() => setShowSignupDialog(true)} className="bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 px-8 py-3 text-lg">
+          <Button 
+            size="lg" 
+            onClick={() => setShowSignupDialog(true)} 
+            className="bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 px-8 py-3 text-lg"
+          >
             注册
           </Button>
         </div>
@@ -59,6 +71,8 @@ const Landing = () => {
           </div>
         </DialogContent>
       </Dialog>
-    </div>;
+    </div>
+  );
 };
+
 export default Landing;
