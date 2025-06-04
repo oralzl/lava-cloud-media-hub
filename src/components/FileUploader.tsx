@@ -1,3 +1,4 @@
+
 import React, { useState, useRef } from 'react';
 import { Upload, X, FileImage, UploadCloud } from 'lucide-react';
 
@@ -61,121 +62,123 @@ const FileUploader: React.FC<FileUploaderProps> = ({ onUpload, onClose }) => {
   };
 
   return (
-    <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-[10000]" style={{ position: 'fixed', top: 0, left: 0, width: '100vw', height: '100vh' }}>
-      <div className="bg-white rounded-lg p-6 w-full max-w-lg mx-4 relative">
-        <div className="flex items-center justify-between mb-6">
+    <div className="fixed inset-0 z-[9999] bg-black/50 backdrop-blur-sm flex items-center justify-center p-4">
+      <div className="bg-white rounded-lg shadow-2xl border w-full max-w-lg relative max-h-[90vh] overflow-hidden">
+        <div className="flex items-center justify-between p-6 border-b">
           <h3 className="text-lg font-medium text-gray-900">Upload Files</h3>
           <button
             onClick={onClose}
-            className="text-gray-400 hover:text-gray-600"
+            className="text-gray-400 hover:text-gray-600 p-1 rounded-full hover:bg-gray-100 transition-colors"
           >
-            <X size={24} />
+            <X size={20} />
           </button>
         </div>
 
-        {/* Enhanced Drop Zone */}
-        <div
-          className={`relative border-2 border-dashed rounded-xl p-12 text-center transition-all duration-300 cursor-pointer ${
-            dragActive
-              ? 'border-gray-900 bg-gray-50 scale-[1.02] shadow-lg animate-pulse'
-              : 'border-gray-300 hover:border-gray-400 hover:bg-gray-25'
-          }`}
-          onDragEnter={handleDrag}
-          onDragLeave={handleDrag}
-          onDragOver={handleDrag}
-          onDrop={handleDrop}
-          onClick={() => fileInputRef.current?.click()}
-        >
-          {/* Upload Cloud Icon */}
-          <div className={`transition-all duration-300 ${dragActive ? 'scale-110' : ''}`}>
-            <UploadCloud 
-              className={`mx-auto h-16 w-16 mb-4 transition-colors duration-300 ${
-                dragActive ? 'text-gray-900' : 'text-gray-400'
-              }`} 
-            />
-          </div>
-          
-          {/* Enhanced text instructions */}
-          <div className="space-y-2">
-            <p className={`text-lg font-medium transition-colors duration-300 ${
-              dragActive ? 'text-gray-900' : 'text-gray-700'
-            }`}>
-              {dragActive ? 'Drop files here!' : 'Drag & Drop files here'}
-            </p>
-            <p className="text-sm text-gray-600">
-              or{' '}
-              <span className="text-gray-900 font-medium hover:underline cursor-pointer">
-                click to browse
-              </span>
-            </p>
-            <div className="flex items-center justify-center space-x-4 mt-4 text-xs text-gray-500">
-              <div className="flex items-center space-x-1">
-                <FileImage size={14} />
-                <span>Images</span>
-              </div>
-              <div className="flex items-center space-x-1">
-                <Upload size={14} />
-                <span>Audio</span>
-              </div>
-              <div className="flex items-center space-x-1">
-                <Upload size={14} />
-                <span>Videos</span>
+        <div className="p-6">
+          {/* Enhanced Drop Zone */}
+          <div
+            className={`relative border-2 border-dashed rounded-xl p-12 text-center transition-all duration-300 cursor-pointer ${
+              dragActive
+                ? 'border-gray-900 bg-gray-50 scale-[1.02] shadow-lg animate-pulse'
+                : 'border-gray-300 hover:border-gray-400 hover:bg-gray-25'
+            }`}
+            onDragEnter={handleDrag}
+            onDragLeave={handleDrag}
+            onDragOver={handleDrag}
+            onDrop={handleDrop}
+            onClick={() => fileInputRef.current?.click()}
+          >
+            {/* Upload Cloud Icon */}
+            <div className={`transition-all duration-300 ${dragActive ? 'scale-110' : ''}`}>
+              <UploadCloud 
+                className={`mx-auto h-16 w-16 mb-4 transition-colors duration-300 ${
+                  dragActive ? 'text-gray-900' : 'text-gray-400'
+                }`} 
+              />
+            </div>
+            
+            {/* Enhanced text instructions */}
+            <div className="space-y-2">
+              <p className={`text-lg font-medium transition-colors duration-300 ${
+                dragActive ? 'text-gray-900' : 'text-gray-700'
+              }`}>
+                {dragActive ? 'Drop files here!' : 'Drag & Drop files here'}
+              </p>
+              <p className="text-sm text-gray-600">
+                or{' '}
+                <span className="text-gray-900 font-medium hover:underline cursor-pointer">
+                  click to browse
+                </span>
+              </p>
+              <div className="flex items-center justify-center space-x-4 mt-4 text-xs text-gray-500">
+                <div className="flex items-center space-x-1">
+                  <FileImage size={14} />
+                  <span>Images</span>
+                </div>
+                <div className="flex items-center space-x-1">
+                  <Upload size={14} />
+                  <span>Audio</span>
+                </div>
+                <div className="flex items-center space-x-1">
+                  <Upload size={14} />
+                  <span>Videos</span>
+                </div>
               </div>
             </div>
+
+            {/* Drag overlay */}
+            {dragActive && (
+              <div className="absolute inset-0 bg-gray-900 bg-opacity-5 rounded-xl flex items-center justify-center">
+                <div className="bg-white rounded-lg px-4 py-2 shadow-lg">
+                  <p className="text-sm font-medium text-gray-900">Release to upload</p>
+                </div>
+              </div>
+            )}
           </div>
 
-          {/* Drag overlay */}
-          {dragActive && (
-            <div className="absolute inset-0 bg-gray-900 bg-opacity-5 rounded-xl flex items-center justify-center">
-              <div className="bg-white rounded-lg px-4 py-2 shadow-lg">
-                <p className="text-sm font-medium text-gray-900">Release to upload</p>
-              </div>
+          <input
+            ref={fileInputRef}
+            type="file"
+            multiple
+            accept="image/*,audio/*,video/*"
+            onChange={handleFileSelect}
+            className="hidden"
+          />
+
+          {/* Selected Files */}
+          {selectedFiles.length > 0 && (
+            <div className="mt-6 space-y-2 max-h-32 overflow-y-auto">
+              <h4 className="text-sm font-medium text-gray-900 mb-2">
+                Selected Files ({selectedFiles.length})
+              </h4>
+              {selectedFiles.map((file, index) => (
+                <div
+                  key={index}
+                  className="flex items-center justify-between p-3 bg-gray-50 rounded-lg border"
+                >
+                  <div className="flex items-center space-x-3 flex-1 min-w-0">
+                    <FileImage className="w-5 h-5 text-gray-400 flex-shrink-0" />
+                    <div className="flex-1 min-w-0">
+                      <p className="text-sm text-gray-900 truncate font-medium">{file.name}</p>
+                      <p className="text-xs text-gray-500">
+                        {formatFileSize(file.size)}
+                      </p>
+                    </div>
+                  </div>
+                  <button
+                    onClick={() => removeFile(index)}
+                    className="text-gray-400 hover:text-red-600 ml-2 p-1 rounded hover:bg-red-50 transition-colors"
+                  >
+                    <X size={16} />
+                  </button>
+                </div>
+              ))}
             </div>
           )}
         </div>
 
-        <input
-          ref={fileInputRef}
-          type="file"
-          multiple
-          accept="image/*,audio/*,video/*"
-          onChange={handleFileSelect}
-          className="hidden"
-        />
-
-        {/* Selected Files */}
-        {selectedFiles.length > 0 && (
-          <div className="mt-6 space-y-2 max-h-32 overflow-y-auto">
-            <h4 className="text-sm font-medium text-gray-900 mb-2">
-              Selected Files ({selectedFiles.length})
-            </h4>
-            {selectedFiles.map((file, index) => (
-              <div
-                key={index}
-                className="flex items-center justify-between p-3 bg-gray-50 rounded-lg border"
-              >
-                <div className="flex items-center space-x-3 flex-1 min-w-0">
-                  <FileImage className="w-5 h-5 text-gray-400 flex-shrink-0" />
-                  <div className="flex-1 min-w-0">
-                    <p className="text-sm text-gray-900 truncate font-medium">{file.name}</p>
-                    <p className="text-xs text-gray-500">
-                      {formatFileSize(file.size)}
-                    </p>
-                  </div>
-                </div>
-                <button
-                  onClick={() => removeFile(index)}
-                  className="text-gray-400 hover:text-red-600 ml-2 p-1 rounded hover:bg-red-50 transition-colors"
-                >
-                  <X size={16} />
-                </button>
-              </div>
-            ))}
-          </div>
-        )}
-
         {/* Upload Button */}
-        <div className="flex space-x-3 mt-6">
+        <div className="flex space-x-3 p-6 border-t bg-gray-50">
           <button
             onClick={onClose}
             className="flex-1 px-4 py-3 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-50 transition-colors font-medium"
