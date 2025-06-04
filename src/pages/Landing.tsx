@@ -1,3 +1,4 @@
+
 import { Button } from "@/components/ui/button";
 import { useState } from "react";
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from "@/components/ui/dialog";
@@ -15,7 +16,7 @@ const Landing = () => {
 
         {/* 产品描述 */}
         <p className="text-xl mb-12 leading-relaxed opacity-90">
-          您的专业云端媒体中心 - 安全存储、智能管理、便捷分享
+          Sync and access your audio, video, and images across LAVA device.
         </p>
 
         {/* 登录注册入口 */}
