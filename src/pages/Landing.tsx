@@ -1,5 +1,5 @@
+
 import { Button } from "@/components/ui/button";
-import { Cloud } from "lucide-react";
 import { useState } from "react";
 import {
   Dialog,
@@ -23,9 +23,6 @@ const Landing = () => {
       <div className="text-center text-white max-w-2xl mx-auto px-6">
         {/* 产品名称 */}
         <div className="flex items-center justify-center gap-3 mb-8">
-          <div className="w-16 h-16 bg-gradient-to-r from-blue-600 to-purple-600 rounded-lg flex items-center justify-center">
-            <Cloud className="w-8 h-8 text-white" />
-          </div>
           <h1 className="text-4xl font-bold">CloudHub</h1>
         </div>
 
